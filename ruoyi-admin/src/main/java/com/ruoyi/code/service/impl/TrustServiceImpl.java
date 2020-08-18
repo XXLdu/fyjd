@@ -51,18 +51,22 @@ public class TrustServiceImpl implements ITrustService {
      */
     @Override
     public List<Trust> selectTrustList(TrustParam trustParam) {
-        return trustMapper.selectTrustList(trustParam);
+        List<Trust> trustList = trustMapper.selectTrustList(trustParam);
+        for(int i=0;i<trustList.size();i++){
+            trustList.get(i).setProcessCode(ProcessCode.getStatus(trustList.get(i).getProcessCode()));
+        }
+        return trustList;
     }
 
-    //查询第一鉴定人待审核列表
-    public List<Trust> selectTester1List(String tester1){
-        return trustMapper.selectTester1List(tester1);
-    };
+        //查询第一鉴定人待审核列表
+        public List<Trust> selectTester1List(String tester1){
+            return trustMapper.selectTester1List(tester1);
+        };
 
-    //查询第二鉴定人待审核列表
-    public List<Trust> selectTester2List(String tester2){
-        return trustMapper.selectTester2List(tester2);
-    };
+        //查询第二鉴定人待审核列表
+        public List<Trust> selectTester2List(String tester2){
+            return trustMapper.selectTester2List(tester2);
+        };
 
 
     /**

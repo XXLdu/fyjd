@@ -92,4 +92,66 @@ public class ProcessCode {
         }
         return toCode;
     }
+    /**
+     * 获取流程状态
+     */
+    public static String getStatus(String processCode){
+        String status = "";
+        switch (processCode) {
+            case "0":
+                status = "待提交";
+                break;
+            case "10":
+                status = "所长退回";
+                break;
+            case "1":
+                status = "所长待审核";
+                break;
+            case "2":
+                status = "待二次提交";
+                break;
+            case "32":
+                status = "鉴定单位退回";
+                break;
+            case "3":
+                status = "待鉴定单位审核";
+                break;
+            case "4":
+                status = "待检验";
+                break;
+            case "5":
+                status = "待生成鉴定文书";
+                break;
+            case "5a":
+                status = "待第二鉴定人审核";
+                break;
+            case "65":
+                status = "授权人退回";
+                break;
+            case "75":
+                status = "机构负责人退回";
+                break;
+            case "6":
+                status = "待授权人审核文书";
+                break;
+            case "76":
+                status = "机构负责人退回";
+                break;
+            case "7":
+                status = "待机构负责人审核文书";
+                break;
+            case "8":
+                status = "待发放";
+                break;
+            case "9":
+                status = "待签收";
+                break;
+            case "x":
+                status = "已签收";
+                break;
+            default:
+                status = "";
+        }
+        return status;
+    }
 }

@@ -36,82 +36,40 @@ public class APPServiceImpl implements IAPPService
     private SysFileInfoMapper sysFileInfoMapper;
 
     @Override
-    public int addTrust(Trust trust, List<MultipartFile> pic, String picInfo){
+    public int addTrust(Trust trust, List<SysFileInfo> sysFileInfos){
         //附件信息
-        int a = 1;
-        if(StringUtils.isNotEmpty(picInfo)){
-            SysFileInfo sysFileInfo = new SysFileInfo();
-            APPPicInfo appPicInfo = new APPPicInfo();
-            List<APPPicInfo> picInfos = JSONArray.parseArray(picInfo, APPPicInfo.class);
-            Map<String,APPPicInfo> picInfosMap = new HashMap<>();
-            for (int i=0;i<picInfos.size();i++){
-                picInfosMap.put(picInfos.get(i).getKey(),picInfos.get(i));
-            }
-            for (int i=0;i<pic.size();i++){
-                MultipartFile file = pic.get(i);
-                appPicInfo = picInfosMap.get("pic"+(i+1));
+        SysFileInfo sysFileInfo = new SysFileInfo();
+        if(StringUtils.isNotEmpty(sysFileInfos)){
+            for (int i=0;i<sysFileInfos.size();i++){
+                sysFileInfo = sysFileInfos.get(i);
                 sysFileInfo.setFatherId(trust.getId());
-                sysFileInfo.setFileType(appPicInfo.getType());
-                sysFileInfo.setFileExplain(appPicInfo.getExplain());
+                sysFileInfo.setFileId(UUID.randomUUID().toString().replace("-",""));
                 try {
-                    a = fileUpload(file,sysFileInfo);
-                } catch (IOException e) {
-                    a = -1;
+                    sysFileInfoMapper.insertSysFileInfo(sysFileInfo);;
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        int b = -1;
-        if(a>0){
-            b = trustMapper.insertTrust(trust);
-        }
-        return b;
+        return trustMapper.insertTrust(trust);
     }
 
     @Override
-    public int updTrust(Trust trust, List<MultipartFile> pic, String picInfo){
-        int a = 1;
-        if(StringUtils.isNotEmpty(picInfo)) {
+    public int updTrust(Trust trust, List<SysFileInfo> sysFileInfos){
+        sysFileInfoMapper.deleteSysFileInfoByFatherId(trust.getId());
+        if(StringUtils.isNotEmpty(sysFileInfos)) {
             SysFileInfo sysFileInfo = new SysFileInfo();
-            //附件信息
-            APPPicInfo appPicInfo = new APPPicInfo();
-            List<APPPicInfo> picInfos = JSONArray.parseArray(picInfo, APPPicInfo.class);
-            Map<String, APPPicInfo> picInfosMap = new HashMap<>();
-            for (int i = 0; i < picInfos.size(); i++) {
-                picInfosMap.put(picInfos.get(i).getKey(), picInfos.get(i));
-            }
-            for (int i = 0; i < pic.size(); i++) {
-                MultipartFile file = pic.get(i);
-                appPicInfo = picInfosMap.get("pic" + (i + 1));
+            for (int i = 0; i < sysFileInfos.size(); i++) {
+                sysFileInfo = sysFileInfos.get(i);
                 sysFileInfo.setFatherId(trust.getId());
-                sysFileInfo.setFileType(appPicInfo.getType());
-                sysFileInfo.setFileExplain(appPicInfo.getExplain());
+                sysFileInfo.setFileId(UUID.randomUUID().toString().replace("-",""));
                 try {
-                    a = fileUpload(file, sysFileInfo);
-                } catch (IOException e) {
-                    a = -1;
+                    sysFileInfoMapper.insertSysFileInfo(sysFileInfo);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        int b = -1;
-        if(a>0){
-            b = trustMapper.updateTrust(trust);
-        }
-        return b;
-    }
-
-    private int fileUpload(MultipartFile file, SysFileInfo sysFileInfo) throws IOException
-    {
-        // 上传文件路径
-        String filePath = Global.getUploadPath();
-        String uuid = UUID.randomUUID().toString().replaceAll("-","");
-        // 上传并返回新文件名称
-        String filePath_name = FileUploadUtils.upload(filePath, file);
-        sysFileInfo.setFileId(uuid);
-        sysFileInfo.setFilePath(filePath_name);
-        sysFileInfo.setFileName(file.getOriginalFilename());
-        sysFileInfoMapper.deleteSysFileInfoByFatherId(sysFileInfo.getFatherId());
-        return sysFileInfoMapper.insertSysFileInfo(sysFileInfo);
+        return trustMapper.updateTrust(trust);
     }
 }

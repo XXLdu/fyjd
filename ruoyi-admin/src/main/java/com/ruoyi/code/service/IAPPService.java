@@ -1,5 +1,6 @@
 package com.ruoyi.code.service;
 
+import com.ruoyi.code.domain.SysFileInfo;
 import com.ruoyi.code.domain.Trust;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,6 @@ import java.util.List;
  */
 public interface IAPPService
 {
-    public int addTrust(Trust trust, List<MultipartFile> pic, String picInfo);
-    public int updTrust(Trust trust, List<MultipartFile> pic, String picInfo);
+    public int addTrust(Trust trust, List<SysFileInfo> sysFileInfos);
+    public int updTrust(Trust trust, List<SysFileInfo> sysFileInfos);
 }

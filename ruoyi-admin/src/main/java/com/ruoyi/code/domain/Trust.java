@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 委托对象 trust
@@ -157,9 +158,13 @@ public class Trust extends BaseEntity
     @Excel(name = "流程id")
     private String processCode;
 
+    private String status;
+
     /** 提醒时间/鉴定文书出具时间/鉴定结束时间	确认受理时计算21日后时间，补充材料和会诊会重新计算时间 */
     @Excel(name = "提醒时间/鉴定文书出具时间/鉴定结束时间	确认受理时计算21日后时间，补充材料和会诊会重新计算时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date appraisalEndTime;
+
+    private List<SysFileInfo> sysFileInfos;
 
     public void setId(String id)
     {
@@ -400,6 +405,14 @@ public class Trust extends BaseEntity
         this.processCode = processCode;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getProcessCode()
     {
         return processCode;
@@ -460,6 +473,14 @@ public class Trust extends BaseEntity
 
     public void setAppraisedtorHomePlace(String appraisedtorHomePlace) {
         this.appraisedtorHomePlace = appraisedtorHomePlace;
+    }
+
+    public List<SysFileInfo> getSysFileInfos() {
+        return sysFileInfos;
+    }
+
+    public void setSysFileInfos(List<SysFileInfo> sysFileInfos) {
+        sysFileInfos = sysFileInfos;
     }
 
     @Override

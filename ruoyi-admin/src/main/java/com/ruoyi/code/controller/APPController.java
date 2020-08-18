@@ -6,10 +6,13 @@ import com.ruoyi.code.domain.App.APPItem;
 import com.ruoyi.code.domain.*;
 import com.ruoyi.code.service.IAPPService;
 import com.ruoyi.code.service.IAppraisalfileService;
+import com.ruoyi.code.service.ISysFileInfoService;
 import com.ruoyi.code.service.ITrustService;
 import com.ruoyi.code.util.EncryptUtils;
+import com.ruoyi.common.config.Global;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysRole;
@@ -22,10 +25,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -56,6 +59,9 @@ public class APPController extends BaseController
 
     @Autowired
     private IAppraisalfileService appraisalfileService;
+
+    @Autowired
+    private ISysFileInfoService sysFileInfoService;
 
 /**********************公共接口common***********************/
     /**  登录接口 */
@@ -106,6 +112,33 @@ public class APPController extends BaseController
     public String getUser(String token){
         SysUser sysUser = getSysUser(token);
         return BackMsg(200,"操作成功",sysUser);
+    }
+
+    /**
+     * 文件上传接口
+     */
+    @PostMapping("/common/upload")
+    @ResponseBody
+    public String upload(@RequestParam("file") MultipartFile file) throws IOException
+    {
+        // 上传文件路径
+        String filePath = Global.getUploadPath();
+        // 上传并返回新文件名称
+        String filePath_name = FileUploadUtils.upload(filePath, file);
+        return BackMsg(200,"操作成功",filePath_name);
+    }
+
+    /**
+     * 获取文件接口
+     */
+    @PostMapping("/common/getFile")
+    @ResponseBody
+    public String getFile(String fatherId)
+    {
+        SysFileInfo sysFileInfo = new SysFileInfo();
+        sysFileInfo.setFatherId(fatherId);
+        List<SysFileInfo> list = sysFileInfoService.selectSysFileInfoList(sysFileInfo);
+        return BackMsg(200,"操作成功",list);
     }
 
 /**********************委托申请接口trust***********************/
@@ -183,13 +216,13 @@ public class APPController extends BaseController
     /**  新增申请接口 */
     @RequestMapping("/trust/add")
     @ResponseBody
-    public String addTrust(Trust trust,List<MultipartFile> pic,String picInfo){
+    public String addTrust(Trust trust,String file){
 
         trust.setId(UUID.randomUUID().toString().replaceAll("-",""));
         trust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001
         trust.setProcessCode(ProcessCode.wtj);//流程标识初始默认值为0
-
-        int a = appService.addTrust(trust,pic,picInfo);
+        List<SysFileInfo> sysFileInfos =JSON.parseArray(file,SysFileInfo.class);
+        int a = appService.addTrust(trust,sysFileInfos);
         if(a>0){
             return BackMsg(200,"操作成功","");
         }else{
@@ -200,8 +233,9 @@ public class APPController extends BaseController
     /**  修改申请接口 */
     @RequestMapping("/trust/update")
     @ResponseBody
-    public String updateTrust(Trust trust,List<MultipartFile> pic,String picInfo){
-        int a = appService.updTrust(trust,pic,picInfo);
+    public String updateTrust(Trust trust,String file){
+        List<SysFileInfo> sysFileInfos =JSON.parseArray(file,SysFileInfo.class);
+        int a = appService.updTrust(trust,sysFileInfos);
         if(a>0){
             return BackMsg(200,"操作成功","");
         }else{
@@ -226,6 +260,10 @@ public class APPController extends BaseController
     @ResponseBody
     public String detailTrust(String id){
         Trust trust = trustService.selectTrustById(id);
+        SysFileInfo sysFileInfo = new SysFileInfo();
+        sysFileInfo.setFatherId(id);
+        List<SysFileInfo> sysFileInfos = sysFileInfoService.selectSysFileInfoList(sysFileInfo);
+        trust.setSysFileInfos(sysFileInfos);
         return BackMsg(200,"操作成功",trust);
     }
 
