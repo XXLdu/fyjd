@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改检验记录')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-testrecord-edit" th:object="${testrecord}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <input name="trustId" th:field="*{trustId}" type="hidden" >
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">检验地点：</label>
+                        <div class="col-sm-8">
+                            <input name="testPlace" th:field="*{testPlace}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">检验复核人：</label>
+                        <div class="col-sm-8">
+                            <input name="reviewer" th:field="*{reviewer}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">检验人一：</label>
+                        <div class="col-sm-8">
+                            <input name="tester1" th:field="*{tester1}" class="form-control" type="text" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">检验人二：</label>
+                        <div class="col-sm-8">
+                            <input name="tester2" th:field="*{tester2}" class="form-control" type="text" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label">检验照片：</label>
+                <div class="col-sm-10">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="form-group">
+                                <div class="file-loading">
+                                    <input id="fileinput" name="fileinput" class="form-control" type="file" multiple>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">结论：</label>
+                        <div class="col-sm-10">
+                            <textarea name="conclusion" class="form-control" th:text="*{conclusion}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
+    <script type="text/javascript">
+        var id = $("input[name='id']").val();
+        var uploadUrl = ctx + 'code/info/add/'+id;
+        $(document).ready(function () {
+            loadFiledata(id,true);
+        });
+
+        var prefix = ctx + "code/testrecord";
+        $("#form-testrecord-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-testrecord-edit').serialize());
+            }
+        }
+
+    </script>
+</body>
+</html>
