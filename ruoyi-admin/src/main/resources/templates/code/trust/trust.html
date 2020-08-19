@@ -50,6 +50,27 @@
                                 <input type="text" name="appraisedtorCardCode"/>
                             </li>
                             <li>
+                                <label>流程状态：</label>
+                                <select name="processCode" th:with="type=${@dict.getType('appraisal_type')}">
+                                    <option value="">所有</option>
+                                    <option value="0">待提交</option>
+                                    <option value="10">所长退回</option>
+                                    <option value="1">所长待审核</option>
+                                    <option value="3">待鉴定单位审核</option>
+                                    <option value="4">待检验</option>
+                                    <option value="5">待生成鉴定文书</option>
+                                    <option value="5a">待第二鉴定人审核</option>
+                                    <option value="65">授权人退回</option>
+                                    <option value="75">机构负责人退回</option>
+                                    <option value="6">待授权人审核文书</option>
+                                    <option value="76">机构负责人退回</option>
+                                    <option value="7">待机构负责人审核文书</option>
+                                    <option value="8">待发放</option>
+                                    <option value="9">待签收</option>
+                                    <option value="x">已签收</option>
+                                </select>
+                            </li>
+                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>

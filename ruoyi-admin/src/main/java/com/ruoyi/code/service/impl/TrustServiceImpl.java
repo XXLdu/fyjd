@@ -53,7 +53,7 @@ public class TrustServiceImpl implements ITrustService {
     public List<Trust> selectTrustList(TrustParam trustParam) {
         List<Trust> trustList = trustMapper.selectTrustList(trustParam);
         for(int i=0;i<trustList.size();i++){
-            trustList.get(i).setProcessCode(ProcessCode.getStatus(trustList.get(i).getProcessCode()));
+            trustList.get(i).setStatus(ProcessCode.getStatus(trustList.get(i).getProcessCode()));
         }
         return trustList;
     }

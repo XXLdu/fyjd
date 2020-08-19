@@ -83,7 +83,7 @@ public class ProcessCode {
                     break;
                 case "3":
                 case "1":
-                    toCode = "0";
+                    toCode = "10";
                     break;
                 default:
                     toCode = fromCode;
