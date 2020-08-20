@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ruoyi.code.domain.App.APPForm;
 import com.ruoyi.code.domain.App.APPItem;
 import com.ruoyi.code.domain.*;
+import com.ruoyi.code.domain.App.AppTrust;
 import com.ruoyi.code.service.IAPPService;
 import com.ruoyi.code.service.IAppraisalfileService;
 import com.ruoyi.code.service.ISysFileInfoService;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -212,16 +214,21 @@ public class APPController extends BaseController
         return BackMsg(200,"操作成功",appForms);
     }
 
-
     /**  新增申请接口 */
     @RequestMapping("/trust/add")
     @ResponseBody
-    public String addTrust(Trust trust,String file){
-
-        trust.setId(UUID.randomUUID().toString().replaceAll("-",""));
-        trust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001
-        trust.setProcessCode(ProcessCode.wtj);//流程标识初始默认值为0
+    public String addTrust(@RequestBody AppTrust appTrust){
+        String file = appTrust.getFile();
+        appTrust.setId(UUID.randomUUID().toString().replaceAll("-",""));
+        appTrust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001
+        appTrust.setProcessCode(ProcessCode.wtj);//流程标识初始默认值为0
         List<SysFileInfo> sysFileInfos =JSON.parseArray(file,SysFileInfo.class);
+        Trust trust = new Trust();
+        try {
+            trust = AppTrust.getTrust(appTrust);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         int a = appService.addTrust(trust,sysFileInfos);
         if(a>0){
             return BackMsg(200,"操作成功","");
@@ -233,8 +240,15 @@ public class APPController extends BaseController
     /**  修改申请接口 */
     @RequestMapping("/trust/update")
     @ResponseBody
-    public String updateTrust(Trust trust,String file){
+    public String updateTrust(@RequestBody AppTrust appTrust){
+        String file = appTrust.getFile();
         List<SysFileInfo> sysFileInfos =JSON.parseArray(file,SysFileInfo.class);
+        Trust trust = new Trust();
+        try {
+            trust = AppTrust.getTrust(appTrust);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         int a = appService.updTrust(trust,sysFileInfos);
         if(a>0){
             return BackMsg(200,"操作成功","");
@@ -263,6 +277,9 @@ public class APPController extends BaseController
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setFatherId(id);
         List<SysFileInfo> sysFileInfos = sysFileInfoService.selectSysFileInfoList(sysFileInfo);
+        for (SysFileInfo sysFileInfo_:sysFileInfos) {
+
+        }
         trust.setSysFileInfos(sysFileInfos);
         return BackMsg(200,"操作成功",trust);
     }
