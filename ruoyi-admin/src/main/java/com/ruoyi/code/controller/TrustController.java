@@ -16,7 +16,9 @@ import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.poi.DocUtil;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.controller.common.CommonController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -52,6 +54,9 @@ public class TrustController extends BaseController
     @Autowired
     private ISysUserService sysUserService;
 
+    @Autowired
+    private ISysDeptService sysDeptService;
+
     @RequiresPermissions("code:trust:view")
     @GetMapping()
     public String trust()
@@ -68,10 +73,10 @@ public class TrustController extends BaseController
     public TableDataInfo list(TrustParam trustParam)
     {
         startPage();
+        trustParam.setDepartmentId(sysDeptService.getSonDeptId(ShiroUtils.getSysUser().getDept()));
         List<Trust> list = trustService.selectTrustList(trustParam);
         return getDataTable(list);
     }
-
     /**
      * 导出委托列表
      */

@@ -15,9 +15,11 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.system.service.ISysUserService;
 import org.apache.shiro.SecurityUtils;
@@ -64,6 +66,9 @@ public class APPController extends BaseController
 
     @Autowired
     private ISysFileInfoService sysFileInfoService;
+
+    @Autowired
+    private ISysDeptService sysDeptService;
 
 /**********************公共接口common***********************/
     /**  登录接口 */
@@ -217,11 +222,12 @@ public class APPController extends BaseController
     /**  新增申请接口 */
     @RequestMapping("/trust/add")
     @ResponseBody
-    public String addTrust(@RequestBody AppTrust appTrust){
+    public String addTrust(@RequestBody AppTrust appTrust,String token){
         String file = appTrust.getFile();
         appTrust.setId(UUID.randomUUID().toString().replaceAll("-",""));
         appTrust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001
         appTrust.setProcessCode(ProcessCode.wtj);//流程标识初始默认值为0
+        appTrust.setDepartmentId(getSysUser(token).getDeptId()+"");
         List<SysFileInfo> sysFileInfos =JSON.parseArray(file,SysFileInfo.class);
         Trust trust = new Trust();
         try {
@@ -278,7 +284,7 @@ public class APPController extends BaseController
         sysFileInfo.setFatherId(id);
         List<SysFileInfo> sysFileInfos = sysFileInfoService.selectSysFileInfoList(sysFileInfo);
         for (SysFileInfo sysFileInfo_:sysFileInfos) {
-
+            sysFileInfo_.setFilePath(Global.getUploadPath()+sysFileInfo_.getFilePath());
         }
         trust.setSysFileInfos(sysFileInfos);
         return BackMsg(200,"操作成功",trust);
@@ -291,6 +297,7 @@ public class APPController extends BaseController
         TrustParam trustParam = new TrustParam();
         SysUser sysUser = getSysUser(token);
         trustParam.setDepartmentName(sysUser.getDept().getDeptName());
+        trustParam.setDepartmentId(sysDeptService.getSonDeptId(sysUser.getDept()));
         List<Trust> trustList = trustService.selectTrustList(trustParam);
         List trustPage = getPage(trustList,current_page);
         //构建分页
@@ -306,9 +313,15 @@ public class APPController extends BaseController
     /**  查看申请列表接口(带参数查询) */
     @RequestMapping("/trust/paramList")
     @ResponseBody
-    public String getTrustList(String token,int current_page,TrustParam trustParam){
+    public String getTrustList(String token,int current_page,String code,
+                               String departmentName,String appraisedtorName,String name1){
         SysUser sysUser = getSysUser(token);
-        trustParam.setDepartmentName(sysUser.getDept().getDeptName());
+        TrustParam trustParam = new TrustParam();
+        trustParam.setCode(code);
+        trustParam.setAppraisedtorName(appraisedtorName);
+        trustParam.setName1(name1);
+        trustParam.setDepartmentName(departmentName);
+        trustParam.setDepartmentId(sysDeptService.getSonDeptId(sysUser.getDept()));
         List<Trust> trustList = trustService.selectTrustList(trustParam);
         List trustPage = getPage(trustList,current_page);
         //构建分页
@@ -349,7 +362,7 @@ public class APPController extends BaseController
     /**  查看委托审批列表接口 */
     @RequestMapping("/trustCheck/list")
     @ResponseBody
-    public String getTrustCheckList(String token,String total,String per_page,String current_page,String last_page){
+    public String getTrustCheckList(String token,int current_page){
         TrustParam trustParam = new TrustParam();
         SysUser sysUser = getSysUser(token);
         List<SysRole> sysRoles = sysUser.getRoles();
@@ -377,20 +390,21 @@ public class APPController extends BaseController
         }
         //去除list中的重复元素
         //trustList = new ArrayList<Trust>(new TreeSet<Trust>(trustList));
+        List trustPage = getPage(trustList,current_page);
         //构建分页
         Map<String,Object> page = new HashMap<>();
-        page.put("total",total);
+        page.put("total",trustList.size());
         page.put("per_page",per_page);
         page.put("current_page",current_page);
-        page.put("last_page",last_page);
-        page.put("data",trustList);
+        page.put("last_page",getLastPage(trustList.size()));
+        page.put("data",trustPage);
         return BackMsg(200,"操作成功",page);
     }
 
     /**  查看文书审批列表接口 */
     @RequestMapping("/appraisalFile/list")
     @ResponseBody
-    public String getppraisalFileCheckList(String token,String total,String per_page,String current_page,String last_page){
+    public String getppraisalFileCheckList(String token,int current_page){
         TrustParam trustParam = new TrustParam();
         SysUser sysUser = getSysUser(token);
         List<SysRole> sysRoles = sysUser.getRoles();
@@ -435,13 +449,14 @@ public class APPController extends BaseController
 
         //去除list中的重复元素
         //trustList = new ArrayList<Trust>(new TreeSet<Trust>(trustList));
+        List trustPage = getPage(trustList,current_page);
         //构建分页
         Map<String,Object> page = new HashMap<>();
-        page.put("total",total);
+        page.put("total",trustList.size());
         page.put("per_page",per_page);
         page.put("current_page",current_page);
-        page.put("last_page",last_page);
-        page.put("data",trustList);
+        page.put("last_page",getLastPage(trustList.size()));
+        page.put("data",trustPage);
         return BackMsg(200,"操作成功",page);
     }
 
@@ -456,14 +471,14 @@ public class APPController extends BaseController
     /**  审核接口 */
     @RequestMapping("/trustCheck/check")
     @ResponseBody
-    public String trustCheck(String trustId,String status,String suggestion){
+    public String trustCheck(String token,String trustId,String status,String suggestion){
         Suggestion suggestion_ = new Suggestion();
         suggestion_.setParentid(trustId);
         suggestion_.setStatus(status);
         suggestion_.setSuggestion(suggestion);
         suggestion_.setTime(new Date());
-        suggestion_.setUser_id(ShiroUtils.getUserId()+"");
-        suggestion_.setUser_name(ShiroUtils.getLoginName());
+        suggestion_.setUser_id(getSysUser(token).getUserId()+"");
+        suggestion_.setUser_name(getSysUser(token).getLoginName());
         int a = trustService.trustProcess(suggestion_);
         if(a>0){
             return BackMsg(200,"操作成功","");

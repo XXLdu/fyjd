@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="code != null  and code != ''"> and CODE = #{code}</if>
             <if test="time != null "> and TIME = #{time}</if>
-            <if test="departmentId != null  and departmentId != ''"> and DEPARTMENT_ID = #{departmentId}</if>
+            <if test="departmentId != null  and departmentId != ''"> and DEPARTMENT_ID in (#{departmentId})</if>
             <if test="departmentName != null  and departmentName != ''"> and DEPARTMENT_NAME like concat('%', #{departmentName}, '%')</if>
             <if test="appraisalType != null  and appraisalType != ''"> and APPRAISAL_TYPE = #{appraisalType}</if>
             <if test="name1 != null  and name1 != ''"> and NAME1 = #{name1}</if>
@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         APPRAISEDTOR_NAME, t.APPRAISEDTOR_SEX, t.APPRAISEDTOR_BIRTHDAY, t.APPRAISEDTOR_CARDCODE, t.APPRAISEDTOR_TEL, t.APPRAISEDTOR_HOMEPLACE
         from trust t
         left join testrecord d on t.id = d.trust_id
-        where t.process_code = '5a'
+        where d.tester2 = #{tester2} and t.process_code = '5a'
     </select>
 
     <select id="selectTester1List" parameterType="String" resultMap="TrustResult">

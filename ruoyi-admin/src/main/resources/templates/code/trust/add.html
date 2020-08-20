@@ -391,15 +391,6 @@
         autoclose: true
     });
 
-    function doSubmit(index, layero){
-        var tree = layero.find("iframe")[0].contentWindow.$._tree;
-        if ($.tree.notAllowParents(tree)) {
-            var body = layer.getChildFrame('body', index);
-            $("#treeId").val(body.find('#treeId').val());
-            $("#treeName").val(body.find('#treeName').val());
-            layer.close(index);
-        }
-    }
     $("[name='name2']").change(function() {
         var userId = $("[name='name2'] option:selected").attr("userid");
         $.ajax({

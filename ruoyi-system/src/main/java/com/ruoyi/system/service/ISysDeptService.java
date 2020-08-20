@@ -92,4 +92,6 @@ public interface ISysDeptService
      * @return 结果
      */
     public String checkDeptNameUnique(SysDept dept);
+
+    public String getSonDeptId(SysDept myDept);
 }
