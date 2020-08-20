@@ -52,7 +52,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="code != null  and code != ''"> and CODE = #{code}</if>
             <if test="time != null "> and TIME = #{time}</if>
-            <if test="departmentId != null  and departmentId != ''"> and DEPARTMENT_ID in (#{departmentId})</if>
+            <if test="departmentId != null and departmentId.size > 0">
+                and DEPARTMENT_ID in
+                <foreach collection="departmentId" item="departmentId" index="index" open="(" close=")" separator=",">
+                    #{departmentId}
+                </foreach>
+            </if>
             <if test="departmentName != null  and departmentName != ''"> and DEPARTMENT_NAME like concat('%', #{departmentName}, '%')</if>
             <if test="appraisalType != null  and appraisalType != ''"> and APPRAISAL_TYPE = #{appraisalType}</if>
             <if test="name1 != null  and name1 != ''"> and NAME1 = #{name1}</if>

@@ -3,8 +3,8 @@ package com.ruoyi.code.controller;
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.code.domain.App.APPForm;
 import com.ruoyi.code.domain.App.APPItem;
-import com.ruoyi.code.domain.*;
 import com.ruoyi.code.domain.App.AppTrust;
+import com.ruoyi.code.domain.*;
 import com.ruoyi.code.service.IAPPService;
 import com.ruoyi.code.service.IAppraisalfileService;
 import com.ruoyi.code.service.ISysFileInfoService;
@@ -14,8 +14,6 @@ import com.ruoyi.common.config.Global;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
-import com.ruoyi.framework.util.ShiroUtils;
-import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
@@ -162,7 +160,7 @@ public class APPController extends BaseController
         wtxx_appForm.setCategory("委托信息");
         List<APPItem> wtxx_appItems = new ArrayList<>();
         wtxx_appItems.add(new APPItem("编号","code",1,UUID.randomUUID()+"",false,"","",null));
-        wtxx_appItems.add(new APPItem("委托时间","time",4,dateFormat.format(new Date()),true,"^\\d{4}-\\d{1,2}-\\d{1,2}","",null));
+        wtxx_appItems.add(new APPItem("委托时间","time",4,dateFormat.format(new Date()),true,"","",null));
         wtxx_appItems.add(new APPItem("委托单位","departmentName",1,sysUser.getDept().getDeptName(),false,"","",null));
         wtxx_appItems.add(new APPItem("鉴定专业","appraisalType",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("appraisal_type")));
         wtxx_appItems.add(new APPItem("委托人一","name1",1,sysUser.getUserName(),false,"","",null));
@@ -171,8 +169,8 @@ public class APPController extends BaseController
         wtxx_appItems.add(new APPItem("证件类型","cardType1",1,sysUser.getCardType(),false,"","",null));
         wtxx_appItems.add(new APPItem("证件编号","cardCode1",1,sysUser.getCardCode(),false,"","",null));
         wtxx_appItems.add(new APPItem("委托人二","name2",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        wtxx_appItems.add(new APPItem("联系方式","tel2",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        wtxx_appItems.add(new APPItem("职务","job2",2,"",true,"^[1]\\d{10}$","",getChooseFromDict("userjob")));
+        wtxx_appItems.add(new APPItem("联系方式","tel2",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","",null));
+        wtxx_appItems.add(new APPItem("职务","job2",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("userjob")));
         wtxx_appItems.add(new APPItem("证件类型","cardType2",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("card_type")));
         wtxx_appItems.add(new APPItem("证件编号","cardCode2",1,"",true,"/^[0-9]*$/","",null));
         wtxx_appForm.setItem(wtxx_appItems);
@@ -184,10 +182,10 @@ public class APPController extends BaseController
         List<APPItem> ajxx_appItems = new ArrayList<>();
         ajxx_appItems.add(new APPItem("案件名称","caseName",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
         ajxx_appItems.add(new APPItem("案发时间","caseTime",4,dateFormat.format(new Date()),true,"^\\d{4}-\\d{1,2}-\\d{1,2}","",null));
-        ajxx_appItems.add(new APPItem("案发地点","casePlace",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        ajxx_appItems.add(new APPItem("案件级别","caseLevel",2,"",true,"","",getChooseFromDict("case_level")));
-        ajxx_appItems.add(new APPItem("案件性质","caseXingzhi",2,"",true,"","",getChooseFromDict("case_xingzhi")));
-        ajxx_appItems.add(new APPItem("案件类型","caseType",2,"",true,"","",getChooseFromDict("case_type")));
+        ajxx_appItems.add(new APPItem("案发地点","casePlace",1,"",true,"","",null));
+        ajxx_appItems.add(new APPItem("案件级别","caseLevel",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("case_level")));
+        ajxx_appItems.add(new APPItem("案件性质","caseXingzhi",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("case_xingzhi")));
+        ajxx_appItems.add(new APPItem("案件类型","caseType",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("case_type")));
         ajxx_appItems.add(new APPItem("简要案情","caseSummary",3,"",true,"","",null));
         ajxx_appForm.setItem(ajxx_appItems);
         appForms.add(ajxx_appForm);
@@ -200,7 +198,7 @@ public class APPController extends BaseController
         bjdrxx_appItems.add(new APPItem("性别","appraisedtorSex",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("sys_user_sex")));
         bjdrxx_appItems.add(new APPItem("出生日期","appraisedtorBirthday",4,"",true,"","",null));
         bjdrxx_appItems.add(new APPItem("身份证号","appraisedtorCardCode",1,"",true,"/^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$/","",null));
-        bjdrxx_appItems.add(new APPItem("电话","appraisedtorTel",1,"",true,"^[1]\\d{10}$","",null));
+        bjdrxx_appItems.add(new APPItem("电话","appraisedtorTel",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","",null));
         bjdrxx_appItems.add(new APPItem("家庭住址","appraisedtorHomePlace",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
         bjdrxx_appItems.add(new APPItem("鉴定要求","appraisalAsk",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
         bjdrxx_appItems.add(new APPItem("鉴定方法要求","appraisalWayAsk",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
@@ -222,12 +220,12 @@ public class APPController extends BaseController
     /**  新增申请接口 */
     @RequestMapping("/trust/add")
     @ResponseBody
-    public String addTrust(@RequestBody AppTrust appTrust,String token){
+    public String addTrust(@RequestBody AppTrust appTrust){
         String file = appTrust.getFile();
         appTrust.setId(UUID.randomUUID().toString().replaceAll("-",""));
         appTrust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001
         appTrust.setProcessCode(ProcessCode.wtj);//流程标识初始默认值为0
-        appTrust.setDepartmentId(getSysUser(token).getDeptId()+"");
+        appTrust.setDepartmentId(getSysUser(appTrust.getToken()).getDeptId()+"");
         List<SysFileInfo> sysFileInfos =JSON.parseArray(file,SysFileInfo.class);
         Trust trust = new Trust();
         try {
@@ -313,7 +311,7 @@ public class APPController extends BaseController
     /**  查看申请列表接口(带参数查询) */
     @RequestMapping("/trust/paramList")
     @ResponseBody
-    public String getTrustList(String token,int current_page,String code,
+    public String getTrustparamList(String token,int current_page,String code,
                                String departmentName,String appraisedtorName,String name1){
         SysUser sysUser = getSysUser(token);
         TrustParam trustParam = new TrustParam();
@@ -332,31 +330,6 @@ public class APPController extends BaseController
         page.put("last_page",getLastPage(trustList.size()));
         page.put("data",trustPage);
         return BackMsg(200,"操作成功",page);
-    }
-
-    private int getLastPage(int num){
-        if ((num % per_page) == 0) {
-            num = num / per_page;
-        } else {
-            num = (num / per_page) + 1;
-        }
-        return num;
-    }
-    private List getPage(List trustList,int current_page){
-        if(current_page < 1) current_page = 1;
-        int startNum = (current_page-1)*15;
-        int endNum = current_page*15;
-        if(trustList.size()<15){
-            startNum=0;
-            endNum=trustList.size();
-        }else if(trustList.size()<startNum){
-            endNum=trustList.size();
-            startNum=endNum-15;
-        }else if(trustList.size()>startNum&&trustList.size()<endNum){
-            endNum = trustList.size();
-        }
-        trustList = trustList.subList(startNum, endNum);
-        return trustList;
     }
 
     /**  查看委托审批列表接口 */
@@ -518,5 +491,31 @@ public class APPController extends BaseController
         }
         return chooseList;
     };
+
+    private int getLastPage(int num){
+        if ((num % per_page) == 0) {
+            num = num / per_page;
+        } else {
+            num = (num / per_page) + 1;
+        }
+        return num;
+    }
+
+    private List getPage(List trustList,int current_page){
+        if(current_page < 1) current_page = 1;
+        int startNum = (current_page-1)*15;
+        int endNum = current_page*15;
+        if(trustList.size()<15){
+            startNum=0;
+            endNum=trustList.size();
+        }else if(trustList.size()<startNum){
+            endNum=trustList.size();
+            startNum=endNum-15;
+        }else if(trustList.size()>startNum&&trustList.size()<endNum){
+            endNum = trustList.size();
+        }
+        trustList = trustList.subList(startNum, endNum);
+        return trustList;
+    }
 
 }

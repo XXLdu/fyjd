@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 委托对象 trust
@@ -31,7 +32,7 @@ public class TrustParam extends BaseEntity
 
     /** 委托单位编号	关联单位表主键 */
     @Excel(name = "委托单位编号	关联单位表主键")
-    private String departmentId;
+    private List<String> departmentId;
 
     /** 委托单位名称 */
     @Excel(name = "委托单位名称")
@@ -189,15 +190,15 @@ public class TrustParam extends BaseEntity
     {
         return time;
     }
-    public void setDepartmentId(String departmentId)
-    {
+
+    public List<String> getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(List<String> departmentId) {
         this.departmentId = departmentId;
     }
 
-    public String getDepartmentId()
-    {
-        return departmentId;
-    }
     public void setDepartmentName(String departmentName)
     {
         this.departmentName = departmentName;

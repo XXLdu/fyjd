@@ -270,21 +270,16 @@ public class SysDeptServiceImpl implements ISysDeptService
         return UserConstants.DEPT_NAME_UNIQUE;
     }
 
-    public String getSonDeptId(SysDept myDept){
+    public List<String> getSonDeptId(SysDept myDept){
         SysDept dept = new SysDept();
         dept.setParentId(myDept.getDeptId());
         List<SysDept> deptList = selectDeptList(dept);
         deptList.add(myDept);
-        String departmentId = "";
+        List<String> departmentIdList = new ArrayList<>();
 
         for (SysDept dept_:deptList) {
-            departmentId += "'";
-            departmentId += dept_.getDeptId();
-            departmentId += "',";
+            departmentIdList.add(dept_.getDeptId()+"");
         }
-        if (departmentId.length() > 0) {
-            departmentId = departmentId.substring(0, departmentId.length() - 1);
-        }
-        return departmentId;
+        return departmentIdList;
     }
 }

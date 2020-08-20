@@ -22,6 +22,9 @@ public class AppTrust extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    /** token */
+    private String token;
+
     /** ID	主键 UUID() */
     private String id;
 
@@ -170,6 +173,14 @@ public class AppTrust extends BaseEntity
     private String appraisalEndTime;
 
     private String file;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public void setId(String id)
     {

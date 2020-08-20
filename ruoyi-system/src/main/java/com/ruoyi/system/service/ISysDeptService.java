@@ -93,5 +93,5 @@ public interface ISysDeptService
      */
     public String checkDeptNameUnique(SysDept dept);
 
-    public String getSonDeptId(SysDept myDept);
+    public List<String> getSonDeptId(SysDept myDept);
 }
