@@ -480,7 +480,7 @@ public class Trust extends BaseEntity
     }
 
     public void setSysFileInfos(List<SysFileInfo> sysFileInfos) {
-        sysFileInfos = sysFileInfos;
+        this.sysFileInfos = sysFileInfos;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ruoyi.code.domain.App;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.code.domain.SysFileInfo;
 import com.ruoyi.code.domain.Trust;
 import com.ruoyi.common.annotation.Excel;
@@ -575,5 +576,44 @@ public class AppTrust extends BaseEntity
         trust.setAppraisedtorTel(appTrust.getAppraisedtorTel());
         trust.setAppraisedtorHomePlace(appTrust.getAppraisedtorHomePlace());
         return trust;
+    }
+
+    public static AppTrust getAppTrust(Trust trust) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        AppTrust appTrust = new AppTrust();
+        appTrust.setId(trust.getId());
+        appTrust.setCode(trust.getCode());
+        appTrust.setTime(sdf.format(trust.getTime()));
+        appTrust.setDepartmentName(trust.getDepartmentName());
+        appTrust.setAppraisalType(trust.getAppraisalType());
+        appTrust.setName1(trust.getName1());
+        appTrust.setTel1(trust.getTel1());
+        appTrust.setJob1(trust.getJob1());
+        appTrust.setCardType1(trust.getCardType1());
+        appTrust.setCardCode1(trust.getCardCode1());
+        appTrust.setName2(trust.getName2());
+        appTrust.setTel2(trust.getTel2());
+        appTrust.setJob2(trust.getJob2());
+        appTrust.setCardType2(trust.getCardType2());
+        appTrust.setCardCode2(trust.getCardCode2());
+        appTrust.setAppraisalAsk(trust.getAppraisalAsk());
+        appTrust.setAppraisalWayAsk(trust.getAppraisalWayAsk());
+        appTrust.setOldAppraisal(trust.getOldAppraisal());
+        appTrust.setCaseName(trust.getCaseName());
+        appTrust.setCasePlace(trust.getCasePlace());
+        appTrust.setCaseTime(sdf.format(trust.getCaseTime()));
+        appTrust.setCaseXingzhi(trust.getCaseXingzhi());
+        appTrust.setCaseType(trust.getCaseType());
+        appTrust.setCaseLevel(trust.getCaseLevel());
+        appTrust.setCaseSummary(trust.getCaseSummary());
+        appTrust.setProcessCode(trust.getProcessCode());
+        appTrust.setAppraisedtorName(trust.getAppraisedtorName());
+        appTrust.setAppraisedtorSex(trust.getAppraisedtorSex());
+        appTrust.setAppraisedtorBirthday(sdf.format(trust.getAppraisedtorBirthday()));
+        appTrust.setAppraisedtorCardCode(trust.getAppraisedtorCardCode());
+        appTrust.setAppraisedtorTel(trust.getAppraisedtorTel());
+        appTrust.setAppraisedtorHomePlace(trust.getAppraisedtorHomePlace());
+        appTrust.setFile(JSON.toJSONString(trust.getSysFileInfos()));
+        return appTrust;
     }
 }

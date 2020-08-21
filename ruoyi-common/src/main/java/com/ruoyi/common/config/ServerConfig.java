@@ -24,6 +24,12 @@ public class ServerConfig
         return getDomain(request);
     }
 
+    public static String getUrl_()
+    {
+        HttpServletRequest request = ServletUtils.getRequest();
+        return getDomain(request);
+    }
+
     public static String getDomain(HttpServletRequest request)
     {
         StringBuffer url = request.getRequestURL();
