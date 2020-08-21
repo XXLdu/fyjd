@@ -545,8 +545,15 @@ public class AppTrust extends BaseEntity
         Trust trust = new Trust();
         trust.setId(appTrust.getId());
         trust.setCode(appTrust.getCode());
-        trust.setTime(sdf.parse(appTrust.getTime()));
+        Date time = new Date();
+        try {
+            time = sdf.parse(appTrust.getCaseTime());
+        } catch (Exception e) {
+            time = null;
+        }
+        trust.setTime(time);
         trust.setDepartmentName(appTrust.getDepartmentName());
+        trust.setDepartmentId(appTrust.getDepartmentId());
         trust.setAppraisalType(appTrust.getAppraisalType());
         trust.setName1(appTrust.getName1());
         trust.setTel1(appTrust.getTel1());
@@ -563,7 +570,13 @@ public class AppTrust extends BaseEntity
         trust.setOldAppraisal(appTrust.getOldAppraisal());
         trust.setCaseName(appTrust.getCaseName());
         trust.setCasePlace(appTrust.getCasePlace());
-        trust.setCaseTime(sdf.parse(appTrust.getCaseTime()));
+        Date caseTime = new Date();
+        try {
+            caseTime = sdf.parse(appTrust.getCaseTime());
+        } catch (Exception e) {
+            caseTime = null;
+        }
+        trust.setCaseTime(caseTime);
         trust.setCaseXingzhi(appTrust.getCaseXingzhi());
         trust.setCaseType(appTrust.getCaseType());
         trust.setCaseLevel(appTrust.getCaseLevel());
@@ -571,7 +584,13 @@ public class AppTrust extends BaseEntity
         trust.setProcessCode(appTrust.getProcessCode());
         trust.setAppraisedtorName(appTrust.getAppraisedtorName());
         trust.setAppraisedtorSex(appTrust.getAppraisedtorSex());
-        trust.setAppraisedtorBirthday(sdf.parse(appTrust.getAppraisedtorBirthday()));
+        Date appraisedtorBirthday = new Date();
+        try {
+            appraisedtorBirthday = sdf.parse(appTrust.getCaseTime());
+        } catch (Exception e) {
+            appraisedtorBirthday = null;
+        }
+        trust.setAppraisedtorBirthday(appraisedtorBirthday);
         trust.setAppraisedtorCardCode(appTrust.getAppraisedtorCardCode());
         trust.setAppraisedtorTel(appTrust.getAppraisedtorTel());
         trust.setAppraisedtorHomePlace(appTrust.getAppraisedtorHomePlace());
@@ -585,6 +604,7 @@ public class AppTrust extends BaseEntity
         appTrust.setCode(trust.getCode());
         appTrust.setTime(sdf.format(trust.getTime()));
         appTrust.setDepartmentName(trust.getDepartmentName());
+        appTrust.setDepartmentId(trust.getDepartmentId());
         appTrust.setAppraisalType(trust.getAppraisalType());
         appTrust.setName1(trust.getName1());
         appTrust.setTel1(trust.getTel1());
