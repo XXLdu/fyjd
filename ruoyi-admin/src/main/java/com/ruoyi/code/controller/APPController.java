@@ -11,6 +11,7 @@ import com.ruoyi.code.service.ISysFileInfoService;
 import com.ruoyi.code.service.ITrustService;
 import com.ruoyi.code.util.EncryptUtils;
 import com.ruoyi.common.config.Global;
+import com.ruoyi.common.config.ServerConfig;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
@@ -168,11 +169,11 @@ public class APPController extends BaseController
         wtxx_appItems.add(new APPItem("职务","job1",1,sysUser.getJob(),false,"","",null));
         wtxx_appItems.add(new APPItem("证件类型","cardType1",1,sysUser.getCardType(),false,"","",null));
         wtxx_appItems.add(new APPItem("证件编号","cardCode1",1,sysUser.getCardCode(),false,"","",null));
-        wtxx_appItems.add(new APPItem("委托人二","name2",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        wtxx_appItems.add(new APPItem("联系方式","tel2",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","",null));
+        wtxx_appItems.add(new APPItem("委托人二","name2",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的名称",null));
+        wtxx_appItems.add(new APPItem("联系方式","tel2",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","请输入正确的手机号码",null));
         wtxx_appItems.add(new APPItem("职务","job2",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("userjob")));
         wtxx_appItems.add(new APPItem("证件类型","cardType2",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("card_type")));
-        wtxx_appItems.add(new APPItem("证件编号","cardCode2",1,"",true,"^[0-9]*[1-9][0-9]*$","",null));
+        wtxx_appItems.add(new APPItem("证件编号","cardCode2",1,"",true,"^[0-9]*[1-9][0-9]*$","请输入正确的证件编号",null));
         wtxx_appForm.setItem(wtxx_appItems);
         appForms.add(wtxx_appForm);
 
@@ -180,7 +181,7 @@ public class APPController extends BaseController
         APPForm ajxx_appForm = new APPForm();
         ajxx_appForm.setCategory("案件信息");
         List<APPItem> ajxx_appItems = new ArrayList<>();
-        ajxx_appItems.add(new APPItem("案件名称","caseName",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
+        ajxx_appItems.add(new APPItem("案件名称","caseName",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的案件名称",null));
         ajxx_appItems.add(new APPItem("案发时间","caseTime",4,dateFormat.format(new Date()),true,"^\\d{4}-\\d{1,2}-\\d{1,2}","",null));
         ajxx_appItems.add(new APPItem("案发地点","casePlace",1,"",true,"","",null));
         ajxx_appItems.add(new APPItem("案件级别","caseLevel",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("case_level")));
@@ -194,15 +195,15 @@ public class APPController extends BaseController
         APPForm bjdrxx_appForm = new APPForm();
         bjdrxx_appForm.setCategory("被鉴定人信息");
         List<APPItem> bjdrxx_appItems = new ArrayList<>();
-        bjdrxx_appItems.add(new APPItem("姓名","appraisedtorName",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
+        bjdrxx_appItems.add(new APPItem("姓名","appraisedtorName",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的姓名",null));
         bjdrxx_appItems.add(new APPItem("性别","appraisedtorSex",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("sys_user_sex")));
         bjdrxx_appItems.add(new APPItem("出生日期","appraisedtorBirthday",4,"",true,"","",null));
-        bjdrxx_appItems.add(new APPItem("身份证号","appraisedtorCardCode",1,"",true,"/^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$/","",null));
-        bjdrxx_appItems.add(new APPItem("电话","appraisedtorTel",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","",null));
-        bjdrxx_appItems.add(new APPItem("家庭住址","appraisedtorHomePlace",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        bjdrxx_appItems.add(new APPItem("鉴定要求","appraisalAsk",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        bjdrxx_appItems.add(new APPItem("鉴定方法要求","appraisalWayAsk",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
-        bjdrxx_appItems.add(new APPItem("原鉴定情况","oldAppraisal",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",null));
+        bjdrxx_appItems.add(new APPItem("身份证号","appraisedtorCardCode",1,"",true,"^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$","请输入正确的身份证号",null));
+        bjdrxx_appItems.add(new APPItem("电话","appraisedtorTel",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","请输入正确的手机号码",null));
+        bjdrxx_appItems.add(new APPItem("家庭住址","appraisedtorHomePlace",1,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的地址",null));
+        bjdrxx_appItems.add(new APPItem("鉴定要求","appraisalAsk",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的鉴定要求",null));
+        bjdrxx_appItems.add(new APPItem("鉴定方法要求","appraisalWayAsk",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的鉴定方法要求",null));
+        bjdrxx_appItems.add(new APPItem("原鉴定情况","oldAppraisal",3,"",true,"^[\\u4e00-\\u9fa5]{0,}$","请输入正确的原鉴定情况",null));
         bjdrxx_appForm.setItem(bjdrxx_appItems);
         appForms.add(bjdrxx_appForm);
 
@@ -282,10 +283,16 @@ public class APPController extends BaseController
         sysFileInfo.setFatherId(id);
         List<SysFileInfo> sysFileInfos = sysFileInfoService.selectSysFileInfoList(sysFileInfo);
         for (SysFileInfo sysFileInfo_:sysFileInfos) {
-            sysFileInfo_.setFilePath(Global.getUploadPath()+sysFileInfo_.getFilePath());
+            sysFileInfo_.setFilePath(ServerConfig.getUrl_()+sysFileInfo_.getFilePath());
         }
         trust.setSysFileInfos(sysFileInfos);
-        return BackMsg(200,"操作成功",trust);
+        AppTrust appTrust = new AppTrust();
+        try {
+            appTrust = AppTrust.getAppTrust(trust);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return BackMsg(200,"操作成功",appTrust);
     }
 
     /**  查看申请列表接口 */
