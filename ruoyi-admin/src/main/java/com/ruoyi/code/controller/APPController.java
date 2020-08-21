@@ -172,7 +172,7 @@ public class APPController extends BaseController
         wtxx_appItems.add(new APPItem("联系方式","tel2",1,"",true,"^[1][3,4,5,7,8][0-9]{9}$","",null));
         wtxx_appItems.add(new APPItem("职务","job2",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("userjob")));
         wtxx_appItems.add(new APPItem("证件类型","cardType2",2,"",true,"^[\\u4e00-\\u9fa5]{0,}$","",getChooseFromDict("card_type")));
-        wtxx_appItems.add(new APPItem("证件编号","cardCode2",1,"",true,"/^[0-9]*$/","",null));
+        wtxx_appItems.add(new APPItem("证件编号","cardCode2",1,"",true,"^[0-9]*[1-9][0-9]*$","",null));
         wtxx_appForm.setItem(wtxx_appItems);
         appForms.add(wtxx_appForm);
 
