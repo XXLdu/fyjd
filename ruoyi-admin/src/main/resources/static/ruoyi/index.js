@@ -244,6 +244,8 @@ $(function() {
                     $('.mainContent .RuoYi_iframe').each(function() {
                         if ($(this).data('id') == dataUrl) {
                             $(this).show().siblings('.RuoYi_iframe').hide();
+                           //刷新页面
+                            $(this).attr("src",$(this).attr("src"))
                             return false;
                         }
                     });
@@ -302,6 +304,8 @@ $(function() {
                 $('.mainContent .RuoYi_iframe').each(function() {
                     if ($(this).data('id') == activeId) {
                         $(this).show().siblings('.RuoYi_iframe').hide();
+                        //刷新页面
+                        $(this).attr("src",$(this).attr("src"))
                         return false;
                     }
                 });
@@ -333,6 +337,8 @@ $(function() {
                 $('.mainContent .RuoYi_iframe').each(function() {
                     if ($(this).data('id') == activeId) {
                         $(this).show().siblings('.RuoYi_iframe').hide();
+                        //刷新页面
+                        $(this).attr("src",$(this).attr("src"))
                         return false;
                     }
                 });
@@ -353,6 +359,8 @@ $(function() {
             		$('.mainContent .RuoYi_iframe').each(function() {
                         if ($(this).data('id') == panelUrl) {
                             $(this).show().siblings('.RuoYi_iframe').hide();
+                            //刷新页面
+                            $(this).attr("src",$(this).attr("src"))
                             return false;
                         }
             		});
@@ -392,6 +400,8 @@ $(function() {
             $('.mainContent .RuoYi_iframe').each(function() {
                 if ($(this).data('id') == currentId) {
                     $(this).show().siblings('.RuoYi_iframe').hide();
+                    //刷新页面
+                    $(this).attr("src",$(this).attr("src"))
                     return false;
                 }
             });
