@@ -129,6 +129,13 @@ public class TrustController extends BaseController
     @ResponseBody
     public AjaxResult addSave(Trust trust)
     {
+        String id = trust.getId();
+        if (StringUtils.isNotEmpty(id)) {
+            Trust trust1 = trustService.selectTrustById(id);
+            if (trust1 != null) {
+                return AjaxResult.error("该委托已保存");
+            }
+        }
         trust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001
         trust.setDepartmentName(ShiroUtils.getSysUser().getDept().getDeptName());
         trust.setDepartmentId(ShiroUtils.getSysUser().getDept().getDeptId()+"");

@@ -1618,7 +1618,7 @@ function loadFiledata (id,operateType) {
 				overwriteInitial: false,
 				allowedPreviewTypes: ['image'],
 				allowedFileExtensions : ["jpg", "png","gif","docx","doc","zip","xlsx","xls","txt"],/*上传文件格式限制*/
-				initialPreview: '',
+				initialPreview: fileData.initialPreview,
 				initialPreviewConfig: fileData.initialPreviewConfig,
 				initialPreviewAsData: true, // allows you to set a raw markup
 				initialPreviewFileType: 'image', // image is the default and can be overridden in config below
