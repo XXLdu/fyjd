@@ -138,7 +138,7 @@ public class TrustServiceImpl implements ITrustService {
         checkLog.setCheckStatus(CheckResultEnum.PASS.getValue());
         checkLog.setCheckSeason("审核通过");
         checkLog.setCheckTime(LocalDateTime.now());
-        checkLog.setCheckUserId(ShiroUtils.getUserId());
+        checkLog.setCheckUserId(ShiroUtils.getUserId() );
         checkLog.setCheckUserName(ShiroUtils.getLoginName());
         checkLog.setTrustId(suggestion.getParentid());
         logService.addCheckLog(checkLog);
