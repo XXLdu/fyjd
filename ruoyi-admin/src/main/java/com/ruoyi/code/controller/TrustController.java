@@ -115,7 +115,7 @@ public class TrustController extends BaseController
         List<SysUser> deptUserList = sysUserService.selectUserList(user2);
         mmap.put("deptUserList", deptUserList);
 
-        mmap.put("appraisalAsk", "以现有材料对王来军身体所受损伤程度进行鉴定，并出具鉴定文书。");
+//        mmap.put("appraisalAsk", "以现有材料对王来军身体所受损伤程度进行鉴定，并出具鉴定文书。");
         mmap.put("appraisalWayAsk", "");
         return prefix + "/add";
     }
@@ -132,8 +132,9 @@ public class TrustController extends BaseController
         String id = trust.getId();
         if (StringUtils.isNotEmpty(id)) {
             Trust trust1 = trustService.selectTrustById(id);
+            //修改
             if (trust1 != null) {
-                return AjaxResult.error("该委托已保存");
+                return toAjax(trustService.updateTrust(trust));
             }
         }
         trust.setCode(trustService.getTrustCode());//系统生成编号：日期yyyymmdd+流水号001

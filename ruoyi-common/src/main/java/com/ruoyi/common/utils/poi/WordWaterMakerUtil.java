@@ -37,7 +37,7 @@ public class WordWaterMakerUtil {
     /**
      * 【核心方法】将输入流中的docx文档加载添加水印后输出到输出流中.
      *
-     * @param filePath  docx文档输入流
+     * @param filePath  docx文档路径
      * @param outputStream 添加水印后docx文档的输出流
      */
     public void makeSlopeWaterMark(String filePath, OutputStream outputStream) {
@@ -119,7 +119,7 @@ public class WordWaterMakerUtil {
         sb.append("position: ").append("absolute"); // 文本path绘制的定位方式
         sb.append(";width: ").append(customText.length() * widthPerWord).append("pt"); // 计算文本占用的长度（文本总个数*单字长度）
         sb.append(";height: ").append("20pt"); // 字体高度
-        sb.append(";z-index: ").append("-251654144");
+        sb.append(";z-index: ").append("999999");
         sb.append(";mso-wrap-edited: ").append("f");
         sb.append(";top: ").append(styleTop);
         sb.append(";mso-position-horizontal-relative: ").append("page");
@@ -193,9 +193,8 @@ public class WordWaterMakerUtil {
     public static void main(String[] args) {
         WordWaterMakerUtil wordWaterMakerUtil = new WordWaterMakerUtil("这是水印");
         try {
-            InputStream inputStream = new FileInputStream("D://waterMark.docx");
             OutputStream outputStream = new FileOutputStream("D://waterMark1.docx");
-            wordWaterMakerUtil.makeSlopeWaterMark("D://waterMark.docx",outputStream);
+            wordWaterMakerUtil.makeSlopeWaterMark("E:\\文档\\资料\\刑事科学技术信息管理系统设计文档\\刑事科学技术信息管理系统业务说明设计文档.docx",outputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
