@@ -27,6 +27,6 @@ public class LogServiceImpl implements ILogService {
 
     @Override
     public List<CheckLog> getCheckLogList(CheckLog checkLog) {
-        return null;
+        return logMapper.getCheckLogList(checkLog);
     }
 }

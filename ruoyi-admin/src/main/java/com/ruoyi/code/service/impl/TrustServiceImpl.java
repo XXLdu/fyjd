@@ -1,23 +1,26 @@
 package com.ruoyi.code.service.impl;
 
-import com.ruoyi.code.domain.ProcessCode;
-import com.ruoyi.code.domain.Suggestion;
-import com.ruoyi.code.domain.Trust;
-import com.ruoyi.code.domain.TrustParam;
+import com.ruoyi.code.domain.*;
+import com.ruoyi.code.enums.CheckResultEnum;
 import com.ruoyi.code.mapper.TrustMapper;
+import com.ruoyi.code.service.ILogService;
 import com.ruoyi.code.service.ITrustService;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.web.controller.common.CommonController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 委托Service业务层处理
@@ -27,10 +30,13 @@ import java.util.List;
  */
 @Service
 public class TrustServiceImpl implements ITrustService {
-    private static final Logger log = LoggerFactory.getLogger(CommonController.class);
+    private static final Logger log = LoggerFactory.getLogger(TrustServiceImpl.class);
 
     @Autowired
     private TrustMapper trustMapper;
+
+    @Autowired
+    private ILogService logService;
 
     /**
      * 查询委托
@@ -119,12 +125,23 @@ public class TrustServiceImpl implements ITrustService {
      * @param suggestion
      * @return 结果
      */
+    @Transactional
     @Override
     public int trustProcess(Suggestion suggestion) {
         Trust trust = selectTrustById(suggestion.getParentid());
         String processCode = ProcessCode.getProcessCode(trust.getProcessCode(), suggestion.getStatus());
         trust.setProcessCode(processCode);
         trust.setId(suggestion.getParentid());
+        log.info("审核通过");
+        CheckLog checkLog = new CheckLog();
+        checkLog.setId(UUID.randomUUID().toString());
+        checkLog.setCheckStatus(CheckResultEnum.PASS.getValue());
+        checkLog.setCheckSeason("审核通过");
+        checkLog.setCheckTime(LocalDateTime.now());
+        checkLog.setCheckUserId(ShiroUtils.getUserId()+"");
+        checkLog.setCheckUserName(ShiroUtils.getLoginName());
+        checkLog.setTrustId(suggestion.getParentid());
+        logService.addCheckLog(checkLog);
         return trustMapper.updateTrust(trust);
     }
 

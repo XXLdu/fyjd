@@ -20,7 +20,7 @@ public interface LogMapper {
 
     @Insert("insert into `trust_check_log` (`id`, `trustId`,`checkTime`, `checkUserId`,`checkUserName`,`checkStatus`,`checkReason` ) values " +
             "(#{check.id},#{check.trustId},#{check.checkTime},#{check.checkUserId},#{check.checkUserName},#{check.checkStatus},#{check.checkReason}) ")
-    int saveCheckLog(@Param("checkLog") CheckLog checkLog);
+    int saveCheckLog(@Param("check") CheckLog check);
 
     @Select("select * from trust_check_log where trustId = #{checkLog.trustId}")
     List<CheckLog> getCheckLogList(@Param("checkLog") CheckLog checkLog);

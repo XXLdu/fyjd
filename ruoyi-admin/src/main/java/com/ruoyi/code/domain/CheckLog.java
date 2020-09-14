@@ -18,7 +18,7 @@ public class CheckLog {
     //审核日期
     private LocalDateTime checkTime;
     //审核人id
-    private String checkUserId;
+    private Long checkUserId;
     //审核人姓名
     private String checkUserName;
     //审核状态0：审核驳回 1：审核通过
@@ -28,7 +28,7 @@ public class CheckLog {
     private String checkStatusName;
 
     //审核原因
-    private String checkSeason;
+    private String checkReason;
     public String getTrustId() {
         return trustId;
     }
@@ -47,11 +47,11 @@ public class CheckLog {
         this.checkTime = checkTime;
     }
 
-    public String getCheckUserId() {
+    public long getCheckUserId() {
         return checkUserId;
     }
 
-    public void setCheckUserId(String checkUserId) {
+    public void setCheckUserId(long checkUserId) {
         this.checkUserId = checkUserId;
     }
 
@@ -72,11 +72,11 @@ public class CheckLog {
     }
 
     public String getCheckSeason() {
-        return checkSeason;
+        return checkReason;
     }
 
-    public void setCheckSeason(String checkSeason) {
-        this.checkSeason = checkSeason;
+    public void setCheckSeason(String checkReason) {
+        this.checkReason = checkReason;
     }
 
 
