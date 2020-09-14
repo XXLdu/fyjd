@@ -2,6 +2,7 @@ package com.ruoyi.code.service.impl;
 
 import com.ruoyi.code.domain.*;
 import com.ruoyi.code.enums.CheckResultEnum;
+import com.ruoyi.code.enums.WriteLogEnum;
 import com.ruoyi.code.mapper.TrustMapper;
 import com.ruoyi.code.service.ILogService;
 import com.ruoyi.code.service.ITrustService;
@@ -125,24 +126,34 @@ public class TrustServiceImpl implements ITrustService {
      * @param suggestion
      * @return 结果
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int trustProcess(Suggestion suggestion) {
         Trust trust = selectTrustById(suggestion.getParentid());
         String processCode = ProcessCode.getProcessCode(trust.getProcessCode(), suggestion.getStatus());
         trust.setProcessCode(processCode);
         trust.setId(suggestion.getParentid());
-        log.info("审核通过");
+        if (WriteLogEnum.YES.getValue().equals(suggestion.getWriteLog())) {
+          this.writeCheckLog(suggestion);
+        }
+        return trustMapper.updateTrust(trust);
+    }
+
+    private int writeCheckLog (Suggestion suggestion) {
+        log.info("添加到审核日志表：{}",suggestion);
         CheckLog checkLog = new CheckLog();
         checkLog.setId(UUID.randomUUID().toString());
-        checkLog.setCheckStatus(CheckResultEnum.PASS.getValue());
-        checkLog.setCheckSeason("审核通过");
+        if ("pass".equals(suggestion.getStatus())) {
+            checkLog.setCheckStatus(CheckResultEnum.PASS.getValue());
+        } else {
+            checkLog.setCheckStatus(CheckResultEnum.BACK.getValue());
+        }
+        checkLog.setCheckSeason(suggestion.getSuggestion());
         checkLog.setCheckTime(LocalDateTime.now());
         checkLog.setCheckUserId(ShiroUtils.getUserId() );
         checkLog.setCheckUserName(ShiroUtils.getLoginName());
         checkLog.setTrustId(suggestion.getParentid());
-        logService.addCheckLog(checkLog);
-        return trustMapper.updateTrust(trust);
+        return logService.addCheckLog(checkLog);
     }
 
     //获取委托编号

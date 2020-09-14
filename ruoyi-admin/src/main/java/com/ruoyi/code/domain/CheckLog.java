@@ -1,5 +1,6 @@
 package com.ruoyi.code.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.code.enums.CheckResultEnum;
 
@@ -16,6 +17,7 @@ public class CheckLog {
     //主键
     private String id;
     //审核日期
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private LocalDateTime checkTime;
     //审核人id
     private Long checkUserId;
@@ -27,8 +29,13 @@ public class CheckLog {
     //审核状态值
     private String checkStatusName;
 
+
+    private String checkType;
+
+    private String trustId;
     //审核原因
     private String checkReason;
+
     public String getTrustId() {
         return trustId;
     }
@@ -36,8 +43,6 @@ public class CheckLog {
     public void setTrustId(String trustId) {
         this.trustId = trustId;
     }
-
-    private String trustId;
 
     public LocalDateTime getCheckTime() {
         return checkTime;
@@ -94,6 +99,25 @@ public class CheckLog {
 
     public void setCheckStatusName(String checkStatusName) {
         this.checkStatusName = checkStatusName;
+    }
+    public void setCheckUserId(Long checkUserId) {
+        this.checkUserId = checkUserId;
+    }
+
+    public String getCheckType() {
+        return checkType;
+    }
+
+    public void setCheckType(String checkType) {
+        this.checkType = checkType;
+    }
+
+    public String getCheckReason() {
+        return checkReason;
+    }
+
+    public void setCheckReason(String checkReason) {
+        this.checkReason = checkReason;
     }
 
 }

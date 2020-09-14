@@ -18,8 +18,8 @@ import java.util.List;
 @Repository
 public interface LogMapper {
 
-    @Insert("insert into `trust_check_log` (`id`, `trustId`,`checkTime`, `checkUserId`,`checkUserName`,`checkStatus`,`checkReason` ) values " +
-            "(#{check.id},#{check.trustId},#{check.checkTime},#{check.checkUserId},#{check.checkUserName},#{check.checkStatus},#{check.checkReason}) ")
+    @Insert("insert into `trust_check_log` (`id`, `trustId`,`checkTime`, `checkUserId`,`checkUserName`,`checkStatus`,`checkReason`,`checkType`,`checkTypeName` ) values " +
+            "(#{check.id},#{check.trustId},#{check.checkTime},#{check.checkUserId},#{check.checkUserName},#{check.checkStatus},#{check.checkReason},#{check.checkType},#{check.checkTypeName}) ")
     int saveCheckLog(@Param("check") CheckLog check);
 
     @Select("select * from trust_check_log where trustId = #{checkLog.trustId}")

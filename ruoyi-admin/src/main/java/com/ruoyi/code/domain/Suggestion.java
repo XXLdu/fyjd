@@ -1,6 +1,7 @@
 package com.ruoyi.code.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -15,6 +16,14 @@ public class Suggestion extends BaseEntity {
     private String status;//审核状态
     private String suggestion;//审核意见
     private String parentid;//所属流程id
+    //是否记录到审核日志中 0：不需要 1：需要
+    private Integer writeLog;
+    public Integer getWriteLog() {
+        return writeLog;
+    }
+    public void setWriteLog(Integer writeLog) {
+        this.writeLog = writeLog;
+    }
 
     public Date getTime() {
         return time;
