@@ -28,14 +28,22 @@ public class CheckLog {
     private Integer checkStatus;
     //审核状态值
     private String checkStatusName;
-
-
+    //审核类型
     private String checkType;
-
+    //审核类型
+    private String checkTypeName;
+    //申请主键
     private String trustId;
     //审核原因
     private String checkReason;
 
+    public String getCheckTypeName() {
+        return checkTypeName;
+    }
+
+    public void setCheckTypeName(String checkTypeName) {
+        this.checkTypeName = checkTypeName;
+    }
     public String getTrustId() {
         return trustId;
     }

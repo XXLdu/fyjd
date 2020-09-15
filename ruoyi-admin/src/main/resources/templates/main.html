@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html  lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <th:block th:include="include :: header('鉴定文书')" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--360浏览器优先以webkit内核解析-->
@@ -19,7 +20,7 @@
 
 <body class="gray-bg">
     <div class="row">
-        <div id="todo" class="col-sm-6">
+        <div id="todo" class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>待办事项</h5>
@@ -41,87 +42,92 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <table>
+                <div class="ibox-content  col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table" class="table table-bordered" style="max-height: 260px;">
                         <tr>
-                            <th>事项名称</th>
-                            <th>待办时间</th>
-                            <th>操作</th>
+                            <th >案件名称</th>
+                            <th style="max-width: 160px;">委托时间</th>
+                            <th style="max-width: 60px;">操作</th>
+                        </tr>
+                        <tr  th:each="user,userStat : ${list}">
+                            <td th:text="${user.caseName}"></td>
+                            <td style="max-width: 160px;" th:text="${#dates.format(user.time, 'yyyy-MM-dd')}"></td>
+                            <td style="max-width: 60px;"><a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="goPage('${user.processCode}')"><i class="fa fa-submit"></i>办理</a></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
-        <div id="notice" class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>通知公告</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="graph_flot.html#">选项1</a>
-                            </li>
-                            <li><a href="graph_flot.html#">选项2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table>
-                        <tr>
-                            <th>通知标题</th>
-                            <th>内容简要</th>
-                            <th>时间</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
+<!--        <div id="notice" class="col-sm-6">-->
+<!--            <div class="ibox float-e-margins">-->
+<!--                <div class="ibox-title">-->
+<!--                    <h5>通知公告</h5>-->
+<!--                    <div class="ibox-tools">-->
+<!--                        <a class="collapse-link">-->
+<!--                            <i class="fa fa-chevron-up"></i>-->
+<!--                        </a>-->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">-->
+<!--                            <i class="fa fa-wrench"></i>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-user">-->
+<!--                            <li><a href="graph_flot.html#">选项1</a>-->
+<!--                            </li>-->
+<!--                            <li><a href="graph_flot.html#">选项2</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                        <a class="close-link">-->
+<!--                            <i class="fa fa-times"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ibox-content">-->
+<!--                    <table>-->
+<!--                        <tr>-->
+<!--                            <th>通知标题</th>-->
+<!--                            <th>内容简要</th>-->
+<!--                            <th>时间</th>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <div class="row">
-        <div id="process" class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>流程导航</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="graph_flot.html#">选项1</a>
-                            </li>
-                            <li><a href="graph_flot.html#">选项2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table>
-                        <tr>
-                            <th>委托案件名称</th>
-                            <th>委托人</th>
-                            <th>委托时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div id="statistic" class="col-sm-6">
+<!--        <div id="process" class="col-sm-6">-->
+<!--            <div class="ibox float-e-margins">-->
+<!--                <div class="ibox-title">-->
+<!--                    <h5>流程导航</h5>-->
+<!--                    <div class="ibox-tools">-->
+<!--                        <a class="collapse-link">-->
+<!--                            <i class="fa fa-chevron-up"></i>-->
+<!--                        </a>-->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">-->
+<!--                            <i class="fa fa-wrench"></i>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-user">-->
+<!--                            <li><a href="graph_flot.html#">选项1</a>-->
+<!--                            </li>-->
+<!--                            <li><a href="graph_flot.html#">选项2</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                        <a class="close-link">-->
+<!--                            <i class="fa fa-times"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ibox-content">-->
+<!--                    <table>-->
+<!--                        <tr>-->
+<!--                            <th>委托案件名称</th>-->
+<!--                            <th>委托人</th>-->
+<!--                            <th>委托时间</th>-->
+<!--                            <th>操作</th>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div id="statistic" class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>统计分析</h5>

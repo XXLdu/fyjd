@@ -9,6 +9,7 @@ import com.ruoyi.code.service.ITrustService;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.web.controller.common.CommonController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,13 +134,11 @@ public class TrustServiceImpl implements ITrustService {
         String processCode = ProcessCode.getProcessCode(trust.getProcessCode(), suggestion.getStatus());
         trust.setProcessCode(processCode);
         trust.setId(suggestion.getParentid());
-        if (WriteLogEnum.YES.getValue().equals(suggestion.getWriteLog())) {
-          this.writeCheckLog(suggestion);
-        }
+        this.writeCheckLog(suggestion,processCode);
         return trustMapper.updateTrust(trust);
     }
 
-    private int writeCheckLog (Suggestion suggestion) {
+    private int writeCheckLog (Suggestion suggestion,String processCode) {
         log.info("添加到审核日志表：{}",suggestion);
         CheckLog checkLog = new CheckLog();
         checkLog.setId(UUID.randomUUID().toString());
@@ -153,6 +152,7 @@ public class TrustServiceImpl implements ITrustService {
         checkLog.setCheckUserId(ShiroUtils.getUserId() );
         checkLog.setCheckUserName(ShiroUtils.getLoginName());
         checkLog.setTrustId(suggestion.getParentid());
+        checkLog.setCheckType(processCode);
         return logService.addCheckLog(checkLog);
     }
 
@@ -167,5 +167,10 @@ public class TrustServiceImpl implements ITrustService {
         Calendar calendar = Calendar.getInstance();
         String dateName = df.format(calendar.getTime());
         return dateName + code;
+    }
+
+    @Override
+    public List<Trust> getHandleList(SysUser user) {
+        return null;
     }
 }

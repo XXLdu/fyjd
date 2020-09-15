@@ -1,5 +1,9 @@
 package com.ruoyi.code.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ProcessCode {
 
     /*审核流程状态标识
@@ -27,6 +31,23 @@ public class ProcessCode {
     public final static String dff = "8";
     public final static String dqs = "9";
     public final static String end = "x";
+
+    //管理员
+    public static Integer admin = 1;
+    //普通角色
+    public static Integer common = 2;
+    //委托申请人
+    public static Integer wtsqr = 100;
+    //申请单位负责人(所长)
+    public static Integer sqdwfzr = 101;
+    //鉴定单位委托接收人
+    public static Integer jddwwtjsr = 102;
+    //鉴定人
+    public static Integer jdr = 103;
+    //签字授权人
+    public static Integer qzsqr = 104;
+    //机构负责人
+    public static Integer jgfzr = 105;
 
     /**
      * 获取流程code
@@ -152,6 +173,20 @@ public class ProcessCode {
             default:
                 status = "";
         }
+        return status;
+    }
+    /**
+     * 根据角色获取待审核的状态(可能存在一个角色审核多个状态的情况)
+     */
+    public static List<String> getHandleStatus(Integer role){
+        List<String> status = new ArrayList<>();
+//        if (wtsqr == role) {
+//            status.add("10");
+//        }
+        if (sqdwfzr == role) {
+            status.add("0");
+        }
+
         return status;
     }
 }

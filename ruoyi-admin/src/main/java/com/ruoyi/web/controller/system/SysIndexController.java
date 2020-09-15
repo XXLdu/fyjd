@@ -1,6 +1,15 @@
 package com.ruoyi.web.controller.system;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.ruoyi.code.domain.TrustParam;
+import com.ruoyi.code.service.ICommonService;
+import com.ruoyi.code.service.ITrustService;
+import com.ruoyi.code.util.CommonUtil;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +35,15 @@ public class SysIndexController extends BaseController
 
     @Autowired
     private ISysConfigService configService;
+    @Autowired
+     private ITrustService trustService;
+
+    @Autowired
+    private ICommonService commonService;
+
+    @Autowired
+    private ISysUserService sysUserService;
+
 
     // 系统首页
     @GetMapping("/index")
@@ -57,6 +75,16 @@ public class SysIndexController extends BaseController
     public String main(ModelMap mmap)
     {
         mmap.put("version", Global.getVersion());
+        Long userId = ShiroUtils.getUserId();
+        List<Integer> roles = commonService.getRoleList(userId);
+        SysUser user = sysUserService.selectUserById(ShiroUtils.getSysUser().getUserId());
+        List<String> deptIds = Arrays.asList(new String[]{user.getDeptId()+""});
+        ArrayList<String> processCode = (ArrayList<String>) CommonUtil.getTrustStatus(roles);
+        TrustParam trustParam = new TrustParam();
+        trustParam.setProcessCode(processCode);
+        trustParam.setDepartmentId(deptIds);
+        //获取待办事项
+        mmap.put("list",trustService.selectTrustList(trustParam));
         return "main";
     }
 }

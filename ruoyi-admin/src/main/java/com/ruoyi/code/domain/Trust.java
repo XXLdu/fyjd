@@ -1,5 +1,6 @@
 package com.ruoyi.code.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -102,6 +103,7 @@ public class Trust extends BaseEntity
 
     /** 案发时间 */
     @Excel(name = "案发时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date caseTime;
 
     /** 案件性质	存value汉字 */
@@ -189,7 +191,7 @@ public class Trust extends BaseEntity
         this.time = time;
     }
 
-    public Date getTime() 
+    public Date getTime()
     {
         return time;
     }

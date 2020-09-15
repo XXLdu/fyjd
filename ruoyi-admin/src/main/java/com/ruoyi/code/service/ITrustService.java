@@ -3,6 +3,7 @@ package com.ruoyi.code.service;
 import com.ruoyi.code.domain.Suggestion;
 import com.ruoyi.code.domain.Trust;
 import com.ruoyi.code.domain.TrustParam;
+import com.ruoyi.system.domain.SysUser;
 
 import java.util.List;
 
@@ -80,5 +81,12 @@ public interface ITrustService
      * 获取委托编号
      */
     public String getTrustCode();
+
+    /**
+     * 获取待办
+     * @param user
+     * @return
+     */
+    List<Trust> getHandleList(SysUser user);
 
 }
